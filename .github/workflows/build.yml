@@ -1,0 +1,42 @@
+name: Build Windows Executable
+
+# This action will trigger on every push to the main branch
+on:
+  push:
+    branches: [ main, master ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    # Use a Windows virtual machine provided by GitHub
+    runs-on: windows-latest
+
+    steps:
+    # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Sets up the specified version of Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    # 3. Install dependencies (PyInstaller)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pyinstaller
+
+    # 4. Run the PyInstaller build command
+    - name: Build with PyInstaller
+      run: |
+        python -m PyInstaller --onefile --noconsole --add-data "bins.yaml;." --add-data "scan_config.yaml;." --name pan_scanner_windows pan_scanner.py
+
+    # 5. Upload the final executable as a downloadable artifact
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pan-scanner-windows-executable
+        path: dist/pan_scanner_windows.exe
