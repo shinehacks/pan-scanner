@@ -1,0 +1,38 @@
+# --- PAN Scanner Configuration ---
+
+# output_path: The name of the CSV file where the report will be saved.
+# The script will automatically append the machine's hostname to this filename.
+# Example: "pan_report.csv" becomes "pan_report-my-hostname.csv"
+output_path: high_confidence_report.csv
+
+# workers: Number of threads to use. 'auto' uses all available CPU cores.
+workers: auto
+
+# min_level: The minimum confidence level to include in the report.
+# Options:
+#   "High"   - Only shows PANs with adjacent keywords (e.g., "card", "visa"). Lowest noise.
+#   "Medium" - Shows all Luhn-valid PANs found. More comprehensive, potentially more noise.
+min_level: High
+
+# --- Performance ---
+# max_file_size_mb: The maximum size (in MB) for a standalone file to be scanned.
+# Files larger than this will be skipped. Set to 0 to disable the limit.
+max_file_size_mb: 500
+
+# max_archive_file_size_mb: The maximum size (in MB) for a single file inside a .zip or .tar
+# archive to be scanned. Files larger than this will be skipped to improve performance.
+# Set to 0 to disable the limit.
+max_archive_size_mb: 100
+
+# --- Security ---
+# password_protection: Enable or disable the password prompt when running the script.
+# Options:
+#   "enabled"  - The script will require a password to run (for standalone use).
+#   "disabled" - The script will run without a password prompt (for automated deployment).
+password_protection: enabled
+
+# password_hash: The SHA256 hash of the password.
+# To generate a hash, run this command in your terminal and paste the output:
+# echo -n "your_secret_password" | sha256sum
+password_hash: "6d7cbfe8a1ceaf7d2c362691053a0700d36713afeba5138b9870375fa4005561"
+
